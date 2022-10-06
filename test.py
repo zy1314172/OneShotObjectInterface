@@ -20,6 +20,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     myWin = MyMainForm()
     myWin.setWindowTitle("图像检索")
-    myWin.setWindowIcon(QtGui.QIcon("./cache/title.jpeg"))
+    myWin.setWindowIcon(QtGui.QIcon("./icons/Icon.ico"))
     myWin.show()
     sys.exit(app.exec_())

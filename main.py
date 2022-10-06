@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QMessageBox
 from actions import ImageViewer
 import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from cls.MyClassDemo import MyBigQLabel
+from cls.MyClass import MyBigQLabel
 
 # gui = uic.loadUiType("interface.ui")[0]     # load UI file designed in Qt Designer
 VALID_FORMAT = ('.BMP', '.GIF', '.JPG', '.JPEG', '.PNG', '.PBM', '.PGM', '.PPM', '.TIFF', '.XBM',

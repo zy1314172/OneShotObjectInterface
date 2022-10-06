@@ -6,7 +6,7 @@
 
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtGui import QPainter, QPen, QPixmap, QImage
 from PyQt5.QtCore import Qt, QRect
 
 
@@ -27,17 +27,17 @@ class MyBigQLabel(QLabel):
         if self.flag:
             self.x1 = event.pos().x()
             self.y1 = event.pos().y()
-            if self.x1 > 800:
-                self.x1 = 800
-            if self.y1 > 600:
-                self.y1 = 600
+            if self.x1 > self.width():
+                self.x1 = self.width()
+            if self.y1 > self.height():
+                self.y1 = self.height()
             self.update()
 
     # 鼠标释放事件
     def mouseReleaseEvent(self, event):
         # self.flag = False
         self.move = False
-        print(self.x0, self.y0, self.x1, self.y1)
+        # print(self.x0, self.y0, self.x1, self.y1)
         # self.x0, self.y0, self.x1, self.y1 = (0, 0, 0, 0)
         # print(self.x0, self.y0, self.x1, self.y1)
 
@@ -65,6 +65,7 @@ class MyBigQLabel(QLabel):
     def endDraw(self):
         self.flag = False
         self.setCursor(Qt.ArrowCursor)
+
 
 
 class MyQLabel(QLabel):
