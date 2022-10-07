@@ -1,16 +1,7 @@
 from PyQt5.QtGui import QImage, QPixmap, QPainter
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
-__author__ = "Atinderpal Singh"
-__license__ = "MIT"
-__version__ = "1.0"
-__email__ = "atinderpalap@gmail.com"
-
 class ImageViewer:
-    ''' Basic image viewer class to show an image with zoom and pan functionaities.
-        Requirement: Qt's Qlabel widget name where the image will be drawn/displayed.
-    '''
     def __init__(self, qlabel):
         self.qlabel_image = qlabel                            # widget/window name where image is displayed (I'm usiing qlabel)
         self.qimage_scaled = QImage()                         # scaled image to fit to the size of qlabel_image
@@ -24,14 +15,12 @@ class ImageViewer:
 
 
     def onResize(self):
-        ''' things to do when qlabel_image is resized '''
         self.qpixmap = QPixmap(self.qlabel_image.size())
         self.qpixmap.fill(QtCore.Qt.gray)
         self.qimage_scaled = self.qimage.scaled(self.qlabel_image.width() * self.zoomX, self.qlabel_image.height() * self.zoomX, QtCore.Qt.KeepAspectRatio)
         self.update()
 
     def loadImage(self, imagePath):
-        ''' To load and display new image.'''
         self.qimage = QImage(imagePath)
         self.qpixmap = QPixmap(self.qlabel_image.size())
         if not self.qimage.isNull():
@@ -44,10 +33,6 @@ class ImageViewer:
             self.statusbar.showMessage('Cannot open this image! Try another one.', 5000)
 
     def update(self):
-        ''' This function actually draws the scaled image to the qlabel_image.
-            It will be repeatedly called when zooming or panning.
-            So, I tried to include only the necessary operations required just for these tasks.
-        '''
         if not self.qimage_scaled.isNull():
             # check if position is within limits to prevent unbounded panning.
             px, py = self.position
@@ -72,17 +57,17 @@ class ImageViewer:
             pass                                          # clear the starting point of drag vector
 
     def zoomPlus(self):
-        self.zoomX += 1
+        self.zoomX = self.zoomX + 1
         px, py = self.position
-        px += self.qlabel_image.width()/2
-        py += self.qlabel_image.height()/2
+        px = px + self.qlabel_image.width()/2
+        py = py + self.qlabel_image.height()/2
         self.position = (px, py)
         self.qimage_scaled = self.qimage.scaled(self.qlabel_image.width() * self.zoomX, self.qlabel_image.height() * self.zoomX, QtCore.Qt.KeepAspectRatio)
         self.update()
 
     def zoomMinus(self):
         if self.zoomX > 1:
-            self.zoomX -= 1
+            self.zoomX = self.zoomX - 0.1
             px, py = self.position
             px -= self.qlabel_image.width()/2
             py -= self.qlabel_image.height()/2

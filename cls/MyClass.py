@@ -6,7 +6,7 @@
 
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtGui import QPainter, QPen, QPixmap, QImage
+from PyQt5.QtGui import QPainter, QPen
 from PyQt5.QtCore import Qt, QRect
 
 

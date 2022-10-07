@@ -1,22 +1,18 @@
-#!/usr/bin/env python
+import os
+import sys
 
-''' A basic GUi to use ImageViewer class to show its functionalities and use cases. '''
 from PIL import Image
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
 from actions import ImageViewer
-import sys, os
-from PyQt5 import QtCore, QtGui, QtWidgets
 from cls.MyClass import MyBigQLabel
 
-# gui = uic.loadUiType("interface.ui")[0]     # load UI file designed in Qt Designer
-VALID_FORMAT = ('.BMP', '.GIF', '.JPG', '.JPEG', '.PNG', '.PBM', '.PGM', '.PPM', '.TIFF', '.XBM',
-                'TIF')  # Image formats supported by Qt
+VALID_FORMAT = ('.BMP', '.GIF', '.JPG', '.JPEG', '.PNG', '.PBM', '.PGM', '.PPM', '.TIFF', '.XBM', 'TIF')
 
 
 def getImages(folder):
-    ''' Get the names and paths of all the images in a directory. '''
     image_list = []
     if os.path.isdir(folder):
         for file in os.listdir(folder):
@@ -32,7 +28,7 @@ class Iwindow(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.setupUi(self)
 
-        self.cntr, self.numImages = -1, -1  # self.cntr have the info of which image is selected/displayed
+        self.cntr, self.numImages = -1, -1
 
         self.image_viewer = ImageViewer(self.qlabel_image)
         self.__connectEvents()
@@ -218,17 +214,17 @@ class Iwindow(QtWidgets.QMainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "图像检索"))
         self.toggle_rect.setToolTip(_translate("MainWindow", "Mark rectangular surface"))
-        self.toggle_rect.setText(_translate("MainWindow", "..."))
+        self.toggle_rect.setText(_translate("MainWindow", "框选"))
         self.toggle_ok.setToolTip(_translate("MainWindow", "Mark OK"))
-        self.toggle_ok.setText(_translate("MainWindow", "..."))
+        self.toggle_ok.setText(_translate("MainWindow", "确定"))
         self.start_recognize.setToolTip(_translate("MainWindow", "Start Recognize"))
-        self.start_recognize.setText(_translate("MainWindow", "..."))
+        self.start_recognize.setText(_translate("MainWindow", "识别"))
         self.prev_im.setToolTip(_translate("MainWindow", "Load Previous Image"))
-        self.prev_im.setText(_translate("MainWindow", "..."))
+        self.prev_im.setText(_translate("MainWindow", "上张"))
         self.next_im.setToolTip(_translate("MainWindow", "Load Next Image"))
-        self.next_im.setText(_translate("MainWindow", "..."))
+        self.next_im.setText(_translate("MainWindow", "下张"))
         self.clear_all.setToolTip(_translate("MainWindow", "Clear All"))
-        self.clear_all.setText(_translate("MainWindow", "..."))
+        self.clear_all.setText(_translate("MainWindow", "清除"))
         self.open_folder.setText(_translate("MainWindow", "Open Folder"))
         self.label_4.setText(_translate("MainWindow", "List of Images"))
 
@@ -244,37 +240,34 @@ class Iwindow(QtWidgets.QMainWindow):
         self.start_recognize.toggled.connect(self.startRecognize)
 
     def selectDir(self):
-        ''' Select a directory, make list of images in it and display the first image in the list. '''
-        # open 'select folder' dialog box
         self.folder = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory"))
         if not self.folder:
             QtWidgets.QMessageBox.warning(self, 'No Folder Selected', 'Please select a valid Folder')
             return
 
         self.logs = getImages(self.folder)
+        if not self.logs:
+            QtWidgets.QMessageBox.warning(self, 'No Folder Selected', 'Please select a valid Folder')
+            return
         self.numImages = len(self.logs)
 
-        # make qitems of the image names
         self.qlist_images.clear()
         self.items = [QtWidgets.QListWidgetItem(log['name']) for log in self.logs]
         for item in self.items:
             self.qlist_images.addItem(item)
 
-        # display first image and enable Pan
         self.cntr = 0
         self.image_viewer.enablePan(True)
         self.image_viewer.loadImage(self.logs[self.cntr]['path'])
         self.items[self.cntr].setSelected(True)
         #self.qlist_images.setItemSelected(self.items[self.cntr], True)
 
-        # enable the next image button on the gui if multiple images are loaded
         if self.numImages > 1:
             self.next_im.setEnabled(True)
 
     def resizeEvent(self, evt):
         if self.cntr >= 0:
             self.image_viewer.onResize()
-            # print(1)
 
     def nextImg(self):
         if self.cntr < self.numImages - 1:
@@ -341,5 +334,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # print __doc__
     main()
