@@ -37,7 +37,6 @@ class MyBigQLabel(QLabel):
     def mouseReleaseEvent(self, event):
         # self.flag = False
         self.move = False
-        # print(self.x0, self.y0, self.x1, self.y1)
         # self.x0, self.y0, self.x1, self.y1 = (0, 0, 0, 0)
         # print(self.x0, self.y0, self.x1, self.y1)
 
