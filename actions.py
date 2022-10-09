@@ -1,5 +1,6 @@
 from PyQt5.QtGui import QImage, QPixmap, QPainter
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget
 
 class ImageViewer:
     def __init__(self, qlabel):
@@ -56,21 +57,22 @@ class ImageViewer:
         else:
             pass                                          # clear the starting point of drag vector
 
+
     def zoomPlus(self):
         self.zoomX = self.zoomX + 1
         px, py = self.position
-        px = px + self.qlabel_image.width()/2
-        py = py + self.qlabel_image.height()/2
+        px = px + int(self.qlabel_image.width()/2)
+        py = py + int(self.qlabel_image.height()/2)
         self.position = (px, py)
         self.qimage_scaled = self.qimage.scaled(self.qlabel_image.width() * self.zoomX, self.qlabel_image.height() * self.zoomX, QtCore.Qt.KeepAspectRatio)
         self.update()
 
     def zoomMinus(self):
         if self.zoomX > 1:
-            self.zoomX = self.zoomX - 0.1
+            self.zoomX = self.zoomX - 1
             px, py = self.position
-            px -= self.qlabel_image.width()/2
-            py -= self.qlabel_image.height()/2
+            px -= int(self.qlabel_image.width()/2)
+            py -= int(self.qlabel_image.height()/2)
             self.position = (px, py)
             self.qimage_scaled = self.qimage.scaled(self.qlabel_image.width() * self.zoomX, self.qlabel_image.height() * self.zoomX, QtCore.Qt.KeepAspectRatio)
             self.update()
