@@ -13,13 +13,19 @@ class ImageViewer:
 
         self.qlabel_image.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
 
+    def wheel(self, event):  # 鼠标滚轮事件
+        if event.angleDelta().y() > 0:
+            self.zoomPlus()
+        else:
+            self.zoomMinus()
 
     def mousePressAction(self, QMouseEvent):
-        print(self.qlabel_image.flag, self.panFlag)
         if self.panFlag:
             self.pressed = QMouseEvent.pos()  # starting point of drag vector
             self.anchor = self.position  # save the pan position when panning starts
         if self.qlabel_image.flag:
+            self.qlabel_image.x0 = QMouseEvent.pos().x()
+            self.qlabel_image.y0 = QMouseEvent.pos().y()
             self.qlabel_image.mousePressEvent = self.qlabel_image.mousePress
 
     def mouseMoveAction(self, QMouseEvent):

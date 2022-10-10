@@ -32,6 +32,7 @@ class Iwindow(QtWidgets.QMainWindow):
 
         self.image_viewer = ImageViewer(self.qlabel_image)
         self.__connectEvents()
+        self.initConnect()
         self.showMaximized()
 
     def setupUi(self, MainWindow):
@@ -74,15 +75,15 @@ class Iwindow(QtWidgets.QMainWindow):
         self.buttonGroup.setObjectName("buttonGroup")
         self.buttonGroup.addButton(self.toggle_rect)
         self.horizontalLayout_3.addWidget(self.toggle_rect)
-        self.toggle_ok = QtWidgets.QToolButton(self.centralwidget)
-        self.toggle_ok.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.move_pic = QtWidgets.QToolButton(self.centralwidget)
+        self.move_pic.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("icons/right.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toggle_ok.setIcon(icon2)
-        self.toggle_ok.setIconSize(QtCore.QSize(20, 20))
-        self.toggle_ok.setObjectName("toggle_ok")
-        self.buttonGroup.addButton(self.toggle_ok)
-        self.horizontalLayout_3.addWidget(self.toggle_ok)
+        icon2.addPixmap(QtGui.QPixmap("icons/move.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.move_pic.setIcon(icon2)
+        self.move_pic.setIconSize(QtCore.QSize(20, 20))
+        self.move_pic.setObjectName("move_pic")
+        self.buttonGroup.addButton(self.move_pic)
+        self.horizontalLayout_3.addWidget(self.move_pic)
         self.start_recognize = QtWidgets.QToolButton(self.centralwidget)
         self.start_recognize.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.start_recognize.setAutoFillBackground(False)
@@ -244,8 +245,8 @@ class Iwindow(QtWidgets.QMainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "图像检索"))
         self.toggle_rect.setToolTip(_translate("MainWindow", "Mark rectangular surface"))
         self.toggle_rect.setText(_translate("MainWindow", "框选"))
-        self.toggle_ok.setToolTip(_translate("MainWindow", "Mark OK"))
-        self.toggle_ok.setText(_translate("MainWindow", "确定"))
+        self.move_pic.setToolTip(_translate("MainWindow", "Move Pic"))
+        self.move_pic.setText(_translate("MainWindow", "移动"))
         self.start_recognize.setToolTip(_translate("MainWindow", "Start Recognize"))
         self.start_recognize.setText(_translate("MainWindow", "识别"))
         self.prev_im.setToolTip(_translate("MainWindow", "Load Previous Image"))
@@ -268,12 +269,12 @@ class Iwindow(QtWidgets.QMainWindow):
         self.clear_all.clicked.connect(self.clearAll)
         self.qlist_images.itemClicked.connect(self.item_click)
 
-        self.zoom_plus.clicked.connect(self.image_viewer.zoomPlus)
-        self.reset_zoom.clicked.connect(self.image_viewer.resetZoom)
-        self.zoom_minus.clicked.connect(self.image_viewer.zoomMinus)
+        self.zoom_plus.clicked.connect(self.zoomPlus)
+        self.reset_zoom.clicked.connect(self.resetZoom)
+        self.zoom_minus.clicked.connect(self.zoomMinus)
 
         self.toggle_rect.clicked.connect(self.markRect)
-        self.toggle_ok.clicked.connect(self.markOk)
+        self.move_pic.clicked.connect(self.movePic)
         self.start_recognize.clicked.connect(self.startRecognize)
 
     def selectDir(self):
@@ -333,8 +334,7 @@ class Iwindow(QtWidgets.QMainWindow):
         self.qlabel_image.startDraw()
         self.initConnect()
 
-    def markOk(self):
-        # self.qlabel_image.endDraw()
+    def movePic(self):
         self.qlabel_image.endDraw()
         self.qlabel_image.setCursor(QtCore.Qt.OpenHandCursor)
         self.image_viewer.enablePan(True)
@@ -372,6 +372,17 @@ class Iwindow(QtWidgets.QMainWindow):
         self.qlabel_image.mousePressEvent = self.image_viewer.mousePressAction
         self.qlabel_image.mouseMoveEvent = self.image_viewer.mouseMoveAction
         self.qlabel_image.mouseReleaseEvent = self.image_viewer.mouseReleaseAction
+        self.qlabel_image.wheelEvent = self.image_viewer.wheel
+
+    def zoomPlus(self):
+        self.image_viewer.zoomPlus()
+        self.movePic()
+
+    def resetZoom(self):
+        self.image_viewer.resetZoom()
+
+    def zoomMinus(self):
+        self.image_viewer.zoomMinus()
 
 
 def main():

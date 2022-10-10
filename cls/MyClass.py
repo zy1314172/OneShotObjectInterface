@@ -43,7 +43,6 @@ class MyBigQLabel(QLabel):
     # 单击鼠标触发事件
     def mousePress(self, event):
         # barHeight = self.bar.height()
-        print(1)
         if self.flag:
             self.x0 = event.pos().x()
             self.y0 = event.pos().y()
