@@ -1,6 +1,5 @@
 from PyQt5.QtGui import QImage, QPixmap, QPainter
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget
+from PyQt5 import QtCore, QtWidgets
 
 class ImageViewer:
     def __init__(self, qlabel):
@@ -13,6 +12,31 @@ class ImageViewer:
         self.panFlag = False        # to enable or disable pan
 
         self.qlabel_image.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
+
+
+    def mousePressAction(self, QMouseEvent):
+        print(self.qlabel_image.flag, self.panFlag)
+        if self.panFlag:
+            self.pressed = QMouseEvent.pos()  # starting point of drag vector
+            self.anchor = self.position  # save the pan position when panning starts
+        if self.qlabel_image.flag:
+            self.qlabel_image.mousePressEvent = self.qlabel_image.mousePress
+
+    def mouseMoveAction(self, QMouseEvent):
+        if self.panFlag:
+            if self.pressed:
+                x, y = QMouseEvent.pos().x(), QMouseEvent.pos().y()
+                dx, dy = x - self.pressed.x(), y - self.pressed.y()  # calculate the drag vector
+                self.position = self.anchor[0] - dx, self.anchor[1] - dy  # update pan position using drag vector
+                self.update()  # show the image with udated pan position
+        if self.qlabel_image.flag:
+            self.qlabel_image.mouseMoveEvent = self.qlabel_image.mouseMove
+
+    def mouseReleaseAction(self, QMouseEvent):
+        if self.panFlag:
+            self.pressed = None
+        if self.qlabel_image.flag:
+            self.qlabel_image.mouseReleaseEvent = self.qlabel_image.mouseRelease
 
 
     def onResize(self):

@@ -21,7 +21,7 @@ class MyBigQLabel(QLabel):
         self.move = False  # 存在移动
 
     # 鼠标移动事件
-    def mouseMoveEvent(self, event):
+    def mouseMove(self, event):
         # barHeight = self.bar.height()
         self.move = True
         if self.flag:
@@ -34,11 +34,19 @@ class MyBigQLabel(QLabel):
             self.update()
 
     # 鼠标释放事件
-    def mouseReleaseEvent(self, event):
+    def mouseRelease(self, event):
         # self.flag = False
         self.move = False
         # self.x0, self.y0, self.x1, self.y1 = (0, 0, 0, 0)
         # print(self.x0, self.y0, self.x1, self.y1)
+
+    # 单击鼠标触发事件
+    def mousePress(self, event):
+        # barHeight = self.bar.height()
+        print(1)
+        if self.flag:
+            self.x0 = event.pos().x()
+            self.y0 = event.pos().y()
 
     # 绘制事件
     def paintEvent(self, event):
@@ -50,12 +58,6 @@ class MyBigQLabel(QLabel):
             painter.drawRect(rect)
         # print(self.x0, self.y0, self.x1, self.y1)
 
-    # 单击鼠标触发事件
-    def mousePressEvent(self, event):
-        # barHeight = self.bar.height()
-        if self.flag:
-            self.x0 = event.pos().x()
-            self.y0 = event.pos().y()
 
     def startDraw(self):
         self.flag = True

@@ -329,10 +329,16 @@ class Iwindow(QtWidgets.QMainWindow):
         self.image_viewer.loadImage(self.logs[self.cntr]['path'])
 
     def markRect(self):
+        self.image_viewer.enablePan(False)
         self.qlabel_image.startDraw()
+        self.initConnect()
 
     def markOk(self):
+        # self.qlabel_image.endDraw()
         self.qlabel_image.endDraw()
+        self.qlabel_image.setCursor(QtCore.Qt.OpenHandCursor)
+        self.image_viewer.enablePan(True)
+        self.initConnect()
 
     def startRecognize(self):
         self.qlabel_image.endDraw()
@@ -361,6 +367,11 @@ class Iwindow(QtWidgets.QMainWindow):
         self.logs = []
         self.qlist_images.clear()
         self.qlabel_image.setPixmap(QPixmap(""))
+
+    def initConnect(self):
+        self.qlabel_image.mousePressEvent = self.image_viewer.mousePressAction
+        self.qlabel_image.mouseMoveEvent = self.image_viewer.mouseMoveAction
+        self.qlabel_image.mouseReleaseEvent = self.image_viewer.mouseReleaseAction
 
 
 def main():
