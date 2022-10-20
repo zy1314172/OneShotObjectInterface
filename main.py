@@ -455,6 +455,14 @@ class Iwindow(QtWidgets.QMainWindow):
 
     def startRecognize(self):
         self.qlabel_image.endDraw()
+        # if self.radioButton.isChecked():
+        #     model = 1
+        # elif self.radioButton_2.isChecked():
+        #     model = 2
+        # elif self.radioButton_3.isChecked():
+        #     model = 3
+        # else:
+        #     QMessageBox.information(self, "提示", self.tr("请选择模型！"))
         try:
             im = Image.open(self.logs[self.cntr]['path'])
             scale = im.width / im.height - self.qlabel_image.width() / self.qlabel_image.height()
@@ -478,12 +486,6 @@ class Iwindow(QtWidgets.QMainWindow):
 
 
             # 跑模型
-            # if self.radioButton.isChecked():
-            #     model = 1
-            # elif self.radioButton_2.isChecked():
-            #     model = 2
-            # elif self.radioButton_3.isChecked():
-            #     model = 3
             # query_img_path = 'cache/cropDetect.jpg'
             # image_dir = self.folder
             # path_data = r"images_out"
