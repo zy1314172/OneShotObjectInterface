@@ -14,10 +14,13 @@ class ImageViewer:
         self.qlabel_image.setSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
 
     def wheel(self, event):  # 鼠标滚轮事件
-        if event.angleDelta().y() > 0:
-            self.zoomPlus()
-        else:
-            self.zoomMinus()
+        try:
+            if event.angleDelta().y() > 0:
+                self.zoomPlus()
+            else:
+                self.zoomMinus()
+        except Exception:
+            return
 
     def mousePressAction(self, QMouseEvent):
         if self.panFlag:
